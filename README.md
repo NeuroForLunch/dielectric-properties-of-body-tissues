@@ -1,4 +1,4 @@
-# Dielectric Properties of Body Tissues
+# Dielectric Properties of Body Tissues from 10 to 100 Ghz
 
 
 - [Aorta](https://neuroforlunch.github.io/dielectric-properties-of-body-tissues/graphs/aorta.html)
