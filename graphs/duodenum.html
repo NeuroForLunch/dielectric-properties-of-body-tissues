@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../assets/echarts.css" />
+</head>
+
+<body style="height: 100%; margin: 0; background: #000000;">
+    <div id="container" style="height: 100%"></div>
+
+    <script type="text/javascript" src="../assets/d3.min.js"></script>
+    <script type="text/javascript" src="../assets/echarts.min.js"></script>
+
+    <script type="text/javascript">
+        var chartDom = document.getElementById("container");
+        var myChart = echarts.init(chartDom, 'dark');
+        var app = {};
+
+        var option;
+
+        d3.csv("../data/duodenum.csv", function(err, rows) {
+
+            function unpack(rows, key) {
+                return rows.map(function(row) {
+                    return row[key];
+                });
+            }
+
+            // header values
+            var headerNames = d3.keys(rows[0]);
+            var headerValues = [headerNames[1], headerNames[2],
+                headerNames[3], headerNames[4],
+                headerNames[5], headerNames[6]
+            ];
+
+            // cell values
+            var cellValues = [];
+            for (i = 0; i < headerValues.length; i++) {
+                cellValue = unpack(rows, headerValues[i]);
+                cellValues[i] = cellValue;
+            }
+
+            var widthValue = '57%';
+            var heightValue = '70%';
+            var symbolSize = 2.5;
+            option = {
+                title: {
+                    left: 'center',
+                    // top: '20px',
+                    padding: [10,20,20,20],
+                    text: 'Dielectric Properties per Frequency of Duodenum Tissue',
+                    textStyle: {
+                        color: '#FFFFFF',
+
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: "<b>Frequency [Hz]:</b> {b0}<br /> <b>{a0}:</b> {c0}",
+                    backgroundColor: '#181A1B',
+                    textStyle: {
+                        color: '#CCCFCF'
+                    },
+                    borderWidth: 0,
+                },
+                toolbox: {
+                    feature: {
+                        dataZoom: {
+                            yAxisIndex: {}
+                        },
+                        restore: {}
+                    }
+                },
+                grid: [{
+                        right: widthValue,
+                        bottom: heightValue
+                    },
+                    {
+                        left: widthValue,
+                        bottom: heightValue
+                    },
+                    {
+                        right: widthValue,
+                        top: '37%',
+                        bottom: '32%'
+                    },
+                    {
+                        left: widthValue,
+                        top: '37%',
+                        bottom: '32%'
+                    },
+                    {
+                        left: '10%',
+                        top: '75%'
+                    }
+                ],
+                xAxis: [{
+                    name: '\nFrequency [Hz]',
+                    nameLocation: 'middle',
+                    gridIndex: 0,
+                    // nameTextStyle: {
+                    //     color: '#FFFFFF'
+                    // },
+                    type: 'category',
+                    boundaryGap: false,
+                    data: cellValues[0]
+                },
+                {
+                    name: '\nFrequency [Hz]',
+                    nameLocation: 'middle',
+                    gridIndex: 1,
+                    // nameTextStyle: {
+                    //     color: '#FFFFFF'
+                    // },
+                    type: 'category',
+                    boundaryGap: false,
+                    data: cellValues[0]
+                },
+                {
+                    name: '\nFrequency [Hz]',
+                    nameLocation: 'middle',
+                    gridIndex: 2,
+                    // nameTextStyle: {
+                    //     color: '#FFFFFF'
+                    // },
+                    type: 'category',
+                    boundaryGap: false,
+                    data: cellValues[0]
+                },
+                {
+                    name: '\nFrequency [Hz]',
+                    nameLocation: 'middle',
+                    gridIndex: 3,
+                    // nameTextStyle: {
+                    //     color: '#FFFFFF'
+                    // },
+                    type: 'category',
+                    boundaryGap: false,
+                    data: cellValues[0]
+                },
+                {
+                    name: '\nFrequency [Hz]',
+                    nameLocation: 'middle',
+                    gridIndex: 4,
+                    // nameTextStyle: {
+                    //     color: '#FFFFFF'
+                    // },
+                    type: 'category',
+                    boundaryGap: false,
+                    data: cellValues[0]
+                }],
+                // ------------------------------------------------------------------
+                // Y-AXIS BEGINS ===================================================
+                yAxis: [{
+                    name: "Conductivity [S/m]",
+                    gridIndex: 0,
+                    nameTextStyle: {
+                        color: '#FFFFFF'
+                    },
+                    type: 'value',
+                    boundaryGap: [0, '100%'],
+                },
+                {
+                    name: "Relative-Permittivity",
+                    gridIndex: 1,
+                    nameTextStyle: {
+                        color: '#FFFFFF'
+                    },
+                    type: 'value',
+                    boundaryGap: [0, '100%'],
+                },
+                {
+                    name: "Loss-Tangent",
+                    gridIndex: 2,
+                    nameTextStyle: {
+                        color: '#FFFFFF'
+                    },
+                    type: 'value',
+                    boundaryGap: [0, '100%'],
+                },
+                {
+                    name: "Wavelength [m]",
+                    gridIndex: 3,
+                    nameTextStyle: {
+                        color: '#FFFFFF'
+                    },
+                    type: 'value',
+                    boundaryGap: [0, '100%']
+                },
+                {
+                    name: "Penetration-Depth [m]",
+                    gridIndex: 4,
+                    nameTextStyle: {
+                        color: '#FFFFFF'
+                    },
+                    type: 'value',
+                    boundaryGap: [0, '100%']
+                },
+                ],
+                dataZoom: [{
+                        xAxisIndex: [0,1,2,3,4],
+                        type: 'inside',
+                        start: 2,
+                        end: 10
+                    },
+                    {
+                        xAxisIndex: [0,1,2,3,4],
+                        start: 2,
+                        end: 10
+                    }
+                ],
+                dataset: {
+                    dimensions: [
+                        // 'Frequency[Hz]',
+                        'Conductivity[S/m]',
+                        'Relative-Permittivity',
+                        'Loss-Tangent',
+                        'Wavelength[m]',
+                        'Penetration-Depth[m]',
+
+                        {
+                            name: 'Frequency[Hz]',
+                            type: 'ordinal'
+                        }
+                    ],
+                    source: [cellValues[1], cellValues[2], cellValues[3], cellValues[4], cellValues[5]]
+                },
+                series: [{
+                    name: 'Conductivity [S/m]',
+                    type: 'line',
+                    symbol: 'none',
+                    sampling: 'average',
+                    itemStyle: {
+                        color: 'rgb(255, 191, 0)'
+                    },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: 'rgb(224, 62, 76)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(255, 191, 0)'
+                            }
+                        ])
+                    },
+                    xAxisIndex: 0,
+                    yAxisIndex: 0,
+                    encode: {
+                        x: 'Frequency [Hz]',
+                        y: 'Conductivity [S/m]',
+                        tooltip: [0, 1, 2, 3, 4]
+                    },
+                    data: cellValues[1]
+                },
+                {
+                    name: 'Relative-Permittivity',
+                    type: 'line',
+                    symbol: 'none',
+                    sampling: 'average',
+                    itemStyle: {
+                        color: 'rgb(255, 70, 131)'
+                    },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: 'rgb(255, 158, 68)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(255, 70, 131)'
+                            }
+                        ])
+                    },
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    encode: {
+                        x: 'Frequency [Hz]',
+                        y: 'Relative-Permittivity',
+                        tooltip: [0, 1, 2, 3, 4]
+                    },
+                    data: cellValues[2]
+                },
+                {
+                    name: 'Loss-Tangent',
+                    type: 'line',
+                    symbol: 'none',
+                    sampling: 'average',
+                    itemStyle: {
+                        color: 'rgb(0, 221, 255)'
+                    },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: 'rgb(77, 119, 255)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(0, 221, 255)'
+                            }
+                        ])
+                    },
+                    xAxisIndex: 2,
+                    yAxisIndex: 2,
+                    encode: {
+                        x: 'Frequency [Hz]',
+                        y: 'Loss-Tangent',
+                        tooltip: [0, 1, 2, 3, 4]
+                    },
+                    data: cellValues[3]
+                },
+                {
+                    name: 'Wavelength [m]',
+                    type: 'line',
+                    symbol: 'none',
+                    sampling: 'average',
+                    itemStyle: {
+                        color: 'rgb(55, 162, 255)'
+                    },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: 'rgb(116, 21, 219)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(55, 162, 255)'
+                            }
+                        ])
+                    },
+                    xAxisIndex: 3,
+                    yAxisIndex: 3,
+                    encode: {
+                        x: 'Frequency [Hz]',
+                        y: 'Wavelength [m]',
+                        tooltip: [0, 1, 2, 3, 4]
+                    },
+                    data: cellValues[4]
+                },
+                {
+                    name: 'Penetration-Depth [m]',
+                    type: 'line',
+                    symbol: 'none',
+                    sampling: 'average',
+                    itemStyle: {
+                        color: 'rgb(128, 255, 165)'
+                    },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: 'rgb(1, 191, 236)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(128, 255, 165)'
+                            }
+                        ])
+                    },
+                    xAxisIndex: 4,
+                    yAxisIndex: 4,
+                    encode: {
+                        x: 'Frequency [Hz]',
+                        y: 'Penetration-Depth [m]',
+                        tooltip: [0, 1, 2, 3, 4]
+                    },
+                    data: cellValues[5]
+                }]
+            };
+
+            if (option && typeof option === 'object') {
+                myChart.setOption(option);
+            }
+        });
+    </script>
+</body>
+
+</html>
